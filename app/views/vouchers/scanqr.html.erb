@@ -1,1 +1,24 @@
-
+<video id="preview"></video>
+<% content_for :after_js do %>
+  <script type="text/javascript">
+    let scanner = new Instascan.Scanner({ video: document.getElementById('preview') });
+    scanner.addListener('scan', function (content) {
+      console.log(content);
+      Rails.ajax({
+        type: 'PATCH',
+        // headers: { 'Content-Type': 'application/json' },
+        url: '<%= checkqr_path %>?decoded_qr=' + content,
+        // data: { voucher: { decoded_qr: 'hello' } }
+      })
+    });
+    Instascan.Camera.getCameras().then(function (cameras) {
+      if (cameras.length > 0) {
+        scanner.start(cameras[0]);
+      } else {
+        console.error('No cameras found.');
+      }
+    }).catch(function (e) {
+      console.error(e);
+    });
+  </script>
+<% end %>
