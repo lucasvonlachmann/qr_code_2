@@ -1,0 +1,22 @@
+<p id="notice"><%= notice %></p>
+<div class="container">
+  <p>
+    <strong>User:</strong>
+    <%= @voucher.user %>
+  </p>
+
+  <p>
+    <strong>Key qrcode:</strong>
+
+    <%= @voucher.key_qrcode %>
+    <% qr = RQRCode::QRCode.new(@voucher.key_qrcode, :size => 4, :level => :h, :mode => :alphanumeric ) %>
+    <%= raw qr.as_html %>
+  </p>
+  <br>
+  <p>
+    <strong><%= @voucher.status %></strong>
+  </p>
+
+  <%= link_to 'Edit', edit_voucher_path(@voucher) %> |
+  <%= link_to 'Back', vouchers_path %>
+</div>
